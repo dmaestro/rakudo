@@ -98,7 +98,11 @@ class CompUnit::Repository::FileSystem does CompUnit::Repository::Locally does C
         return CompUnit.new(
             :short-name($spec.short-name),
             :repo-id(self!comp-unit-id($spec.short-name).Str),
-            :repo(self)
+            :repo(self),
+            |( $!meta
+                ?? :distribution(Distribution::Hash.new(:meta($!meta)))
+                !! ()
+            ),
         ) if $base;
         return self.next-repo.resolve($spec) if self.next-repo;
         Nil
